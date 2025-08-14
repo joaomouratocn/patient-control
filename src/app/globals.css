@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+:root {
+  --accent-green: #45bb5e;
+  --accent-orange: #f3ab63;
+  --surface: rgba(13, 12, 12, 0.52);
+  --primary: #2f89d1;
+  --bg-inputs: #f7f7f7;
+  --text-input: #808080;
+}
