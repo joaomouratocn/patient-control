@@ -37,8 +37,9 @@ export default function () {
                         type="text"
                         placeholder="Insira o numero do cartão do SUS do paciente"
                     />
+
+                    <Button text="Cadastrar" className="mt-3" />
                 </div>
-                <Button text="Cadastrar" className="mt-6" />
             </div>
         </Container>
     )

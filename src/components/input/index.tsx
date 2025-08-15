@@ -5,7 +5,7 @@ interface receivedProps {
 }
 export function Input(props: receivedProps) {
     return (
-        <div className="flex flex-col w-full max-w-[380px]">
+        <div className="flex flex-col w-full">
             <label className="pl-2 text-white font-medium">{`${props.label}:`}</label>
             <input
                 type={props.type}
