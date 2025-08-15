@@ -35,7 +35,7 @@ export default function Consult() {
                         <tbody>
                             <tr className="odd:bg-gray-100 even:bg-white">
                                 <td className="p-1">JOAO MOURATO DA CRUZ NETO</td>
-                                <td className="p-1">350.000.358.36</td>
+                                <td className="p-1">000.000.000.00</td>
                                 <td className="p-1">07/05/1990</td>
                                 <td className="p-1">Geralda de Fatima Santos</td>
                                 <td className="p-1">12345678987</td>
