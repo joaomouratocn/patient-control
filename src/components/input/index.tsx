@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { IoIosEye, IoIosEyeOff } from 'react-icons/io'
+import { LuEyeClosed, LuEye } from "react-icons/lu";
 
 interface receivedProps {
     label: string
@@ -31,12 +31,12 @@ export function Input(props: receivedProps) {
                     placeholder={props.placeholder}
                     className='flex-1'
                 />
-                {props.showEye && showPass && (
-                    <IoIosEye size={24} className="p-1 rounded ml-1 cursor-pointer hover:bg-gray-500 duration-300" onClick={visivility} />
+                {props.showEye && !showPass && (
+                    <LuEye size={24} className="p-1 rounded ml-1 cursor-pointer hover:bg-gray-500 duration-300" onClick={visivility} />
                 )}
 
-                {props.showEye && !showPass && (
-                    <IoIosEyeOff size={24} className="p-1 rounded ml-1 cursor-pointer hover:bg-gray-500 duration-300" onClick={visivility} />
+                {props.showEye && showPass && (
+                    <LuEyeClosed size={24} className="p-1 rounded ml-1 cursor-pointer hover:bg-gray-500 duration-300" onClick={visivility} />
                 )}
             </div>
         </div>

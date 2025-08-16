@@ -1,25 +1,35 @@
 import { Button } from "@/components/button";
 import { Container } from "@/components/container";
 import { Input } from "@/components/input";
+import { IoPersonAddOutline } from "react-icons/io5";
+import { TiDocument } from "react-icons/ti";
+import { LuDownload } from "react-icons/lu";
 
-export default function Consult() {
+export default function Flexpen() {
     return (
         <Container>
             <div className="flex flex-col items-center gap-3.5">
-                <h1 className="text-4xl font-bold text-white my-6">Consultar Pacientes</h1>
+                <div className="flex flex-row justify-between w-full max-w-7xl items-center">
+                    <h1 className="text-2xl font-bold text-white my-6 mt-">PACIENTES QUE JÁ RETIRARAM FLEXPEN</h1>
+                    <div className="flex flex-row items-center bg-[var(--accent-orange)] px-2 py-1 rounded font-bold">
+                        <Button text="Adicionar Paciente" className="bg-[var(--accent-orange)]" Icon={IoPersonAddOutline} />
+                    </div>
+                </div>
                 <div className="flex flex-row w-full max-w-[1000px] gap-3 items-center mb-2">
                     <Input
                         type="text"
                         label="Tipo de busca"
                         placeholder="Nome"
+                        showEye={false}
                     />
 
                     <Input
                         type="text"
                         label="Insira o que deseja procurar"
                         placeholder="Digite os dados"
+                        showEye={false}
                     />
-                    <Button text="Buscar" className="mt-6" />
+                    <Button text="Buscar" className="mt-6 bg-[var(--accent-green)]" />
                 </div>
                 <div className="overflow-y-auto h- min-w-full">
                     <table className="min-w-full">
@@ -30,6 +40,7 @@ export default function Consult() {
                                 <th className="text-white px-2 py-1">Data nascimento</th>
                                 <th className="text-white px-2 py-1">Nome da mãe</th>
                                 <th className="text-white px-2 py-1">Cartão SUS</th>
+                                <th className="text-white px-2 py-1">Termo</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,6 +50,12 @@ export default function Consult() {
                                 <td className="p-1">07/05/1990</td>
                                 <td className="p-1">Geralda de Fatima Santos</td>
                                 <td className="p-1">12345678987</td>
+                                <td className="p-1">
+                                    <div className="flex flex-row gap-2 px-2.5">
+                                        <TiDocument size={24} />
+                                        <LuDownload size={24} />
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

@@ -28,7 +28,7 @@ export default function Login() {
                     </div>
                     <Button
                         text="Acessar"
-                        className="mt-3"
+                        className="mt-3 bg-[var(--accent-green)]"
                     />
                 </div>
             </div>
