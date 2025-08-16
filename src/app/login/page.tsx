@@ -3,7 +3,7 @@ import { Container } from "@/components/container";
 import { Input } from "@/components/input";
 import Image from "next/image";
 import logo from '@/assets/logo-text.png'
-import { IoIosEyeOff, IoIosEye } from "react-icons/io";
+
 
 export default function Login() {
     return (
@@ -15,14 +15,16 @@ export default function Login() {
                         type="text"
                         label="Usuário"
                         placeholder="Nome de usuário"
+                        showEye={false}
                     />
                     <div className="flex flex-row justify-end items-end w-full">
                         <Input
                             type="password"
                             label="Senha"
                             placeholder="Insira sua senha"
+                            showEye={true}
                         />
-                        <IoIosEye size={24} className="bg-white p-1 rounded ml-1 h-[32px] cursor-pointer hover:bg-gray-500 duration-300" />
+
                     </div>
                     <Button
                         text="Acessar"
