@@ -15,14 +15,14 @@ export default function Login() {
                         type="text"
                         label="Usuário"
                         placeholder="Nome de usuário"
-                        showEye={false}
+                        showIcon={false}
                     />
                     <div className="flex flex-row justify-end items-end w-full">
                         <Input
                             type="password"
                             label="Senha"
                             placeholder="Insira sua senha"
-                            showEye={true}
+                            showIcon={true}
                         />
 
                     </div>

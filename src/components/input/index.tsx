@@ -7,7 +7,8 @@ interface receivedProps {
     label: string
     placeholder: string
     type: string
-    showEye: boolean
+    showIcon: boolean
+    accept?: string
 }
 export function Input(props: receivedProps) {
     const [showPass, setShowPass] = useState(true)
@@ -30,12 +31,13 @@ export function Input(props: receivedProps) {
                     type={type}
                     placeholder={props.placeholder}
                     className='flex-1'
+                    accept={props.accept}
                 />
-                {props.showEye && !showPass && (
+                {props.showIcon && !showPass && (
                     <LuEye size={24} className="p-1 rounded ml-1 cursor-pointer hover:bg-gray-500 duration-300" onClick={visivility} />
                 )}
 
-                {props.showEye && showPass && (
+                {props.showIcon && showPass && (
                     <LuEyeClosed size={24} className="p-1 rounded ml-1 cursor-pointer hover:bg-gray-500 duration-300" onClick={visivility} />
                 )}
             </div>
