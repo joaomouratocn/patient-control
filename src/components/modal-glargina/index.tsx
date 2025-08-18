@@ -6,10 +6,11 @@ import { createPatient } from "./actions";
 import { useActionState } from "react";
 import { SubmitButton } from "../submitButton";
 
-export function ModalGlarginaResgister() {
+export function ModalGlarginaResgister({ onClose }: { onClose?: () => void }) {
   const [state, formAction] = useActionState(createPatient, { error: {} });
   const { hideModal } = useContext(ModalContext);
   function handleHideModal() {
+    onClose?.();
     hideModal();
   }
   return (

@@ -1,70 +1,120 @@
-"use client"
+"use client";
 import { Button } from "@/components/button";
 import { Container } from "@/components/container";
 import { Input } from "@/components/input";
 import { ModalGlarginaResgister } from "@/components/modal-glargina";
-import { ModalContext } from "@/providers/modal"
-import { useContext } from "react";
+import { ModalContext } from "@/providers/modal";
+import { useContext, useEffect, useState } from "react";
 import { IoPersonAddOutline } from "react-icons/io5";
+import { getPatients } from "./actions";
+import { formatCPF } from "@/lib/formatCpf";
+import { Patient } from "@/types/types";
+import { SubmitButton } from "@/components/submitButton";
+import SelectSearch from "@/components/select-search";
+import { FiLoader } from "react-icons/fi";
 
 export default function ConsultGlargina() {
-    const { showModal } = useContext(ModalContext)
+  const [patients, setPatients] = useState<Patient[]>([]);
+  const [dataTable, setDataTable] = useState(false);
+  const { showModal } = useContext(ModalContext);
 
-    function handleOpenModal() {
-        showModal(<ModalGlarginaResgister />)
+  async function getAllPatients() {
+    try {
+      setDataTable(true);
+      const data = await getPatients();
+      setPatients(data);
+    } catch (error) {
+      console.error("Erro ao buscar pacientes:", error);
+    } finally {
+      setDataTable(false); // sempre desativa o loading
     }
+  }
 
-    return (
-        <Container>
-            <div className="flex flex-col items-center gap-3.5">
-                <div className="flex flex-row justify-between w-full max-w-7xl items-center">
-                    <h1 className="text-2xl font-bold text-white my-6 mt-">PACIENTES QUE PEGAM GLARGINA NO ALTO CUSTO</h1>
-                    <div className="flex flex-row items-center bg-[var(--accent-orange)] px-2 py-1 rounded font-bold">
-                        <button className="bg-[var(--accent-orange)] text-white flex flex-row gap-2 items-center cursor-pointer p-2 justify-center" onClick={handleOpenModal}>
-                            Adicionar Paciente
-                            <IoPersonAddOutline size={24} />
-                        </button>
-                    </div>
-                </div>
-                <div className="flex flex-row w-full max-w-[1000px] gap-3 items-center mb-2">
-                    <Input
-                        type="text"
-                        label="Tipo de busca"
-                        placeholder="Nome"
-                        showIcon={false}
-                    />
+  useEffect(() => {
+    getAllPatients();
+  }, []);
 
-                    <Input
-                        type="text"
-                        label="Insira o que deseja procurar"
-                        placeholder="Digite os dados"
-                        showIcon={false}
-                    />
-                    <Button text="Buscar" className="mt-6 bg-[var(--accent-green)]" />
-                </div>
-                <div className="overflow-y-auto h- min-w-full">
-                    <table className="min-w-full">
-                        <thead>
-                            <tr className="text-left bg-[var(--surface)]">
-                                <th className="text-white px-2 py-1">Nome</th>
-                                <th className="text-white px-2 py-1">CPF</th>
-                                <th className="text-white px-2 py-1">Data nascimento</th>
-                                <th className="text-white px-2 py-1">Nome da mãe</th>
-                                <th className="text-white px-2 py-1">Cartão SUS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr className="odd:bg-gray-100 even:bg-white">
-                                <td className="p-1">JOAO MOURATO DA CRUZ NETO</td>
-                                <td className="p-1">000.000.000.00</td>
-                                <td className="p-1">07/05/1990</td>
-                                <td className="p-1">Geralda de Fatima Santos</td>
-                                <td className="p-1">12345678987</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </Container >
-    )
+  function handleOpenModal() {
+    showModal(<ModalGlarginaResgister onClose={() => getAllPatients()} />);
+  }
+
+  return (
+    <Container>
+      <div className="flex flex-col items-center justify-center gap-3.5 px-2">
+        <h1 className="text-2xl font-bold text-white my-6 md:text-4xl">
+          PACIENTES QUE PEGAM GLARGINA NO ALTO CUSTO
+        </h1>
+        <form className="flex flex-col w-full max-w-7xl gap-3 justify-end md:flex-row">
+          <div className="flex-1 flex flex-col gap-3">
+            <label className="text-white font-medium">Tipo de busca:</label>
+            <SelectSearch />
+          </div>
+
+          <div className="flex-1 flex flex-col gap-3">
+            <label className="text-white font-medium">Dados para busca:</label>
+            <input
+              type="text"
+              placeholder="Insira os dados"
+              className="bg-[var(--bg-inputs)] p-2 rounded"
+            />
+          </div>
+
+          <SubmitButton
+            text="Buscar"
+            loadText="Buscando...."
+            className="flex-1 md:mt-[36px]"
+          />
+          <button
+            onClick={handleOpenModal}
+            className="flex items-center gap-1.5 bg-[var(--accent-orange)] hover:bg-[var(--accent-orange-hover)] duration-300 p-2 rounded text-white font-bold flex-1 justify-center md:mt-[36px]"
+          >
+            Adicionar
+            <IoPersonAddOutline size={24} />
+          </button>
+        </form>
+
+        {dataTable && (
+          <div className="flex flex-col items-center mt-6">
+            <FiLoader size={42} color="#FFF" className="animate-spin" />
+            <p className="font-bold text-2xl text-white">
+              Carregando dados.....
+            </p>
+          </div>
+        )}
+
+        {patients.length === 0 && (
+          <p className="font-bold text-2xl text-white mt-6">
+            Sem dados no filtro
+          </p>
+        )}
+
+        {patients.length > 0 && (
+          <div className=" overflow-x-auto w-full">
+            <table className="min-w-full table-auto border-collapse">
+              <thead>
+                <tr className="text-left bg-[var(--surface)]">
+                  <th className="text-white px-2 py-1">Nome</th>
+                  <th className="text-white px-2 py-1">CPF</th>
+                  <th className="text-white px-2 py-1">Data nascimento</th>
+                  <th className="text-white px-2 py-1">Nome da mãe</th>
+                  <th className="text-white px-2 py-1">Cartão SUS</th>
+                </tr>
+              </thead>
+              <tbody>
+                {patients.map((p) => (
+                  <tr className="odd:bg-gray-300 even:bg-white" key={p.id}>
+                    <td className="p-1">{p.name}</td>
+                    <td className="p-1">{formatCPF(p.cpf)}</td>
+                    <td className="p-1">{p.birth.toLocaleDateString()}</td>
+                    <td className="p-1">{p.mother}</td>
+                    <td className="p-1">{p.sus}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </Container>
+  );
 }
