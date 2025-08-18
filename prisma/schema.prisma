@@ -19,7 +19,7 @@ model Patient {
   name   String  @db.VarChar(50)
   cpf    String  @unique @db.VarChar(50)
   mother String  @db.VarChar(100)
-  birth  String  @db.VarChar(10)
+  birth  DateTime
   sus    String? @db.VarChar(30) // opcional
 }
 
