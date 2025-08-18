@@ -13,6 +13,7 @@ import { LuDownload } from "react-icons/lu";
 export default function ConsultFlexpen() {
     const { showModal } = useContext(ModalContext)
 
+
     function handleOpenModal() {
         showModal(<ModalFlexpenResgister />)
     }
