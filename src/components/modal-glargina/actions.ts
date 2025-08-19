@@ -1,7 +1,8 @@
 "use server";
 import { normalizeText } from "@/lib/normalize-text";
 import { prisma } from "@/lib/prisma";
-import { PatientSchema } from "@/schemas/patient";
+import { InsertPatientGlarginaSchema } from "@/schemas/Insert-patient-glargina-schema";
+import { SearchPatientSchema } from "@/schemas/search-patient-schema";
 import { revalidatePath } from "next/cache";
 
 type PatientFormState = {
@@ -28,7 +29,7 @@ export async function createPatient(
     sus: formData.get("sus"),
   };
 
-  const parsed = PatientSchema.safeParse(rawData);
+  const parsed = InsertPatientGlarginaSchema.safeParse(rawData);
 
   if (!parsed.success) {
     //criar logs

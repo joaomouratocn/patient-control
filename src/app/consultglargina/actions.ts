@@ -1,25 +1,31 @@
 "use server";
 import { prisma } from "@/lib/prisma";
+import { Patient, PatientFilterSearch } from "@/types/types";
 
-// Server Action para buscar todos os pacientes
-export async function getPatientsByName(name: string) {
+export async function getAllPatients() {
   const patients = await prisma.patient.findMany({
-    where: {
-      name: name,
-    },
     orderBy: {
-      name: "asc", // opcional: ordena por nome
+      name: "asc",
     },
   });
 
   return patients;
 }
 
-export async function getPatients() {
-  const patients = await prisma.patient.findMany({
-    orderBy: {
-      name: "asc", // opcional: ordena por nome
+export async function getPatientsByField(
+  field: PatientFilterSearch,
+  value: string
+): Promise<Patient[]> {
+  const whereClause = {
+    [field]: {
+      contains: value,
+      mode: "insensitive",
     },
+  };
+
+  const patients = await prisma.patient.findMany({
+    where: whereClause,
+    orderBy: { name: "asc" },
   });
 
   return patients;

@@ -1,62 +1,97 @@
 "use client";
-import { Button } from "@/components/button";
 import { Container } from "@/components/container";
-import { Input } from "@/components/input";
 import { ModalGlarginaResgister } from "@/components/modal-glargina";
 import { ModalContext } from "@/providers/modal";
 import { useContext, useEffect, useState } from "react";
 import { IoPersonAddOutline } from "react-icons/io5";
-import { getPatients } from "./actions";
+import { getAllPatients, getPatientsByField } from "./actions";
 import { formatCPF } from "@/lib/formatCpf";
-import { Patient } from "@/types/types";
+import { Patient, PatientFilterSearch } from "@/types/types";
 import { SubmitButton } from "@/components/submitButton";
-import SelectSearch from "@/components/select-search";
 import { FiLoader } from "react-icons/fi";
+import { normalizeText } from "@/lib/normalize-text";
 
 export default function ConsultGlargina() {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [dataTable, setDataTable] = useState(false);
+  const [searchType, setSearchType] = useState<PatientFilterSearch>("name");
+  const [searchValue, setSearchValue] = useState("");
   const { showModal } = useContext(ModalContext);
 
-  async function getAllPatients() {
+  function handleOpenModal() {
+    showModal(<ModalGlarginaResgister />);
+  }
+
+  async function fetchPatients(all?: boolean) {
     try {
       setDataTable(true);
-      const data = await getPatients();
+      let data: Patient[] = [];
+      if (all) {
+        data = await getAllPatients();
+      } else {
+        if (!searchValue) {
+          alert("Digite um valor para a busca");
+          return;
+        }
+
+        data = await getPatientsByField(
+          searchType,
+          searchValue.replace(/\D/g, "")
+        );
+      }
       setPatients(data);
     } catch (error) {
       console.error("Erro ao buscar pacientes:", error);
     } finally {
-      setDataTable(false); // sempre desativa o loading
+      setDataTable(false);
     }
   }
 
   useEffect(() => {
-    getAllPatients();
+    fetchPatients(true);
   }, []);
-
-  function handleOpenModal() {
-    showModal(<ModalGlarginaResgister onClose={() => getAllPatients()} />);
-  }
 
   return (
     <Container>
       <div className="flex flex-col items-center justify-center gap-3.5 px-2">
         <h1 className="text-xl text-center font-bold text-white my-6 sm:text-2xl">
-          TESTE
+          PACIENTES QUE RETIRAM GLARGINA ALTO CUSTO
         </h1>
         <div className="w-full gap-3 flex flex-col md:flex-row md:justify-center">
-          <form className="flex flex-col flex-1 gap-3 md:flex-row">
+          <form
+            className="flex flex-col flex-1 gap-3 md:flex-row"
+            onSubmit={(e) => {
+              e.preventDefault();
+              fetchPatients(false);
+            }}
+          >
             <div className="flex flex-col justify-end flex-1">
               <label className="text-white font-medium">Tipo de busca:</label>
-              <SelectSearch />
+              <select
+                id="unit"
+                value={searchType}
+                onChange={(e) =>
+                  setSearchType(e.target.value as PatientFilterSearch)
+                }
+                className="rounded p-2.5 bg-[var(--bg-inputs)] text-center text-[var(--text-input)] justify-end items-center"
+              >
+                <option value="name">NOME</option>
+                <option value="cpf">CPF</option>
+                <option value="sus">SUS</option>
+                <option value="mother">NOME DA MÃE</option>
+              </select>
             </div>
 
             <div className="flex flex-col justify-end flex-1">
-              <label className="text-white font-medium">Dados para busca:</label>
+              <label className="text-white font-medium">
+                Dados para busca:
+              </label>
               <input
                 type="text"
                 placeholder="Insira os dados"
                 className="bg-[var(--bg-inputs)] p-2 rounded"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
               />
             </div>
 
@@ -84,7 +119,7 @@ export default function ConsultGlargina() {
           </div>
         )}
 
-        {patients.length === 0 && (
+        {patients.length === 0 && dataTable === false && (
           <p className="font-bold text-2xl text-white mt-6">
             Sem dados no filtro
           </p>
@@ -107,7 +142,9 @@ export default function ConsultGlargina() {
                   <tr className="odd:bg-gray-300 even:bg-white" key={p.id}>
                     <td className="p-1">{p.name}</td>
                     <td className="p-1">{formatCPF(p.cpf)}</td>
-                    <td className="p-1">{p.birth.toLocaleDateString('pt-BR')}</td>
+                    <td className="p-1">
+                      {new Date(p.birth).toLocaleDateString("pt-BR")}
+                    </td>
                     <td className="p-1">{p.mother}</td>
                     <td className="p-1">{p.sus}</td>
                   </tr>

@@ -6,3 +6,5 @@ export type Patient = {
   birth: Date;
   sus?: string | null; // opcional
 };
+
+export type PatientFilterSearch = "name" | "cpf" | "mother" | "sus";
