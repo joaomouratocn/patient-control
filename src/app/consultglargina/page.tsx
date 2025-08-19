@@ -41,37 +41,39 @@ export default function ConsultGlargina() {
   return (
     <Container>
       <div className="flex flex-col items-center justify-center gap-3.5 px-2">
-        <h1 className="text-2xl font-bold text-white my-6 md:text-4xl">
-          PACIENTES QUE PEGAM GLARGINA NO ALTO CUSTO
+        <h1 className="text-xl text-center font-bold text-white my-6 sm:text-2xl">
+          TESTE
         </h1>
-        <form className="flex flex-col w-full max-w-7xl gap-3 justify-end md:flex-row">
-          <div className="flex-1 flex flex-col gap-3">
-            <label className="text-white font-medium">Tipo de busca:</label>
-            <SelectSearch />
-          </div>
+        <div className="w-full gap-3 flex flex-col md:flex-row md:justify-center">
+          <form className="flex flex-col flex-1 gap-3 md:flex-row">
+            <div className="flex flex-col justify-end flex-1">
+              <label className="text-white font-medium">Tipo de busca:</label>
+              <SelectSearch />
+            </div>
 
-          <div className="flex-1 flex flex-col gap-3">
-            <label className="text-white font-medium">Dados para busca:</label>
-            <input
-              type="text"
-              placeholder="Insira os dados"
-              className="bg-[var(--bg-inputs)] p-2 rounded"
+            <div className="flex flex-col justify-end flex-1">
+              <label className="text-white font-medium">Dados para busca:</label>
+              <input
+                type="text"
+                placeholder="Insira os dados"
+                className="bg-[var(--bg-inputs)] p-2 rounded"
+              />
+            </div>
+
+            <SubmitButton
+              text="Buscar"
+              loadText="Buscando...."
+              className="md:mt-[36px] flex-1"
             />
-          </div>
-
-          <SubmitButton
-            text="Buscar"
-            loadText="Buscando...."
-            className="flex-1 md:mt-[36px]"
-          />
+          </form>
           <button
             onClick={handleOpenModal}
-            className="flex items-center gap-1.5 bg-[var(--accent-orange)] hover:bg-[var(--accent-orange-hover)] duration-300 p-2 rounded text-white font-bold flex-1 justify-center md:mt-[36px]"
+            className="flex gap-1 bg-[var(--accent-orange)] hover:bg-[var(--accent-orange-hover)] duration-300 p-2 rounded text-white font-bold items-center justify-center md:mt-[36px]"
           >
             Adicionar
             <IoPersonAddOutline size={24} />
           </button>
-        </form>
+        </div>
 
         {dataTable && (
           <div className="flex flex-col items-center mt-6">
@@ -105,7 +107,7 @@ export default function ConsultGlargina() {
                   <tr className="odd:bg-gray-300 even:bg-white" key={p.id}>
                     <td className="p-1">{p.name}</td>
                     <td className="p-1">{formatCPF(p.cpf)}</td>
-                    <td className="p-1">{p.birth.toLocaleDateString()}</td>
+                    <td className="p-1">{p.birth.toLocaleDateString('pt-BR')}</td>
                     <td className="p-1">{p.mother}</td>
                     <td className="p-1">{p.sus}</td>
                   </tr>

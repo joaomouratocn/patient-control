@@ -24,7 +24,7 @@ export function Header() {
               />
             </Link>
             <div className="flex flex-row w-[300] items-center gap-6">
-              <p className="text-white text-lg flex-1 text-right">JOAO MOURATO</p>
+              <p className=" hidden text-white text-lg flex-1 text-right sm:block">JOAO MOURATO</p>
               <button className="cursor-pointer">
                 <ImExit size={28} color="#fff" />
               </button>

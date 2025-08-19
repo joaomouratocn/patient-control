@@ -8,7 +8,7 @@ export default function SelectSearch() {
       id="unit"
       value={unit}
       onChange={(e) => setUnit(e.target.value)}
-      className="rounded p-2 bg-[var(--bg-inputs)] flex-1 text-center text-[var(--text-input)]"
+      className="rounded p-2.5 bg-[var(--bg-inputs)] text-center text-[var(--text-input)] justify-end items-center"
     >
       <option value="name">NOME</option>
       <option value="cpf">CPF</option>
