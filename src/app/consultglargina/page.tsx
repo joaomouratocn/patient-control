@@ -19,7 +19,7 @@ export default function ConsultGlargina() {
   const { showModal } = useContext(ModalContext);
 
   function handleOpenModal() {
-    showModal(<ModalGlarginaResgister />);
+    showModal(<ModalGlarginaResgister onClose={() => fetchPatients(true)} />);
   }
 
   async function fetchPatients(all?: boolean) {
@@ -34,9 +34,17 @@ export default function ConsultGlargina() {
           return;
         }
 
+        let searchNormalized = ""
+
+        if (searchType === "cpf") {
+          searchNormalized = searchValue.replace(/\D/g, "")
+        } else {
+          searchNormalized = normalizeText(searchValue)
+        }
+
         data = await getPatientsByField(
           searchType,
-          searchValue.replace(/\D/g, "")
+          searchNormalized
         );
       }
       setPatients(data);

@@ -15,12 +15,12 @@ datasource db {
 }
 
 model Patient {
-  id     String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name   String  @db.VarChar(50)
-  cpf    String  @unique @db.VarChar(50)
-  mother String  @db.VarChar(100)
+  id     String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name   String   @db.VarChar(50)
+  cpf    String   @unique @db.VarChar(50)
+  mother String   @db.VarChar(100)
   birth  DateTime
-  sus    String? @db.VarChar(30) // opcional
+  sus    String?  @unique @db.VarChar(30)
 }
 
 model User {
