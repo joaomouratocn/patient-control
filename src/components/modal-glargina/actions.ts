@@ -1,7 +1,7 @@
 "use server";
 import { normalizeText } from "@/lib/normalize-text";
 import { prisma } from "@/lib/prisma";
-import { InsertPatientGlarginaSchema } from "@/schemas/Insert-patient-glargina-schema";
+import { InsertPatientFlexPenSchema } from "@/schemas/insert-patient-flexpen-schema";
 
 type PatientFormState = {
   error?: {
@@ -26,20 +26,24 @@ export async function createPatient(
       mother: formData.get("mother"),
       birth: formData.get("birth"),
       sus: formData.get("sus"),
+      file: formData.get("file"),
     };
 
-    const parsed = InsertPatientGlarginaSchema.safeParse(rawData);
+    const parsed = InsertPatientFlexPenSchema.safeParse(rawData);
 
     if (!parsed.success) {
       //criar logs
-      return { error: parsed.error.flatten().fieldErrors };
+      return {
+        success: false,
+        error: parsed.error.flatten().fieldErrors,
+      };
     }
 
     const { name, cpf, mother, birth, sus } = parsed.data;
 
     const cpfOnlyNumbers = cpf.replace(/\D/g, "");
 
-    await prisma.patient.create({
+    await prisma.patientGlargina.create({
       data: {
         name: normalizeText(name),
         cpf: cpfOnlyNumbers,
@@ -50,10 +54,9 @@ export async function createPatient(
     });
 
     return { success: true };
-
   } catch (error: any) {
     if (error.code === "P2002") {
-      const target = error.meta.target as string[]
+      const target = error.meta.target as string[];
       if (target?.includes("cpf")) {
         return { error: { cpf: ["CPF já cadastrado."] } };
       }

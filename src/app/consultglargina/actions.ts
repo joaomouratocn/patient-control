@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { Patient, PatientFilterSearch } from "@/types/types";
 
 export async function getAllPatients() {
-  const patients = await prisma.patient.findMany({
+  const patients = await prisma.patientGlargina.findMany({
     orderBy: {
       name: "asc",
     },
@@ -23,7 +23,7 @@ export async function getPatientsByField(
     },
   };
 
-  const patients = await prisma.patient.findMany({
+  const patients = await prisma.patientGlargina.findMany({
     where: whereClause,
     orderBy: { name: "asc" },
   });

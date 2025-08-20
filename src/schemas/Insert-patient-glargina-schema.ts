@@ -11,6 +11,6 @@ export const InsertPatientGlarginaSchema = z.object({
   sus: z.string().optional(),
 });
 
-export type InsertPatientGlarginaSchema = z.infer<
+export type InsertPatientGlarginaData = z.infer<
   typeof InsertPatientGlarginaSchema
 >;

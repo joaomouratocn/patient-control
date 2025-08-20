@@ -14,13 +14,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Patient {
+model PatientGlargina {
   id     String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name   String   @db.VarChar(50)
   cpf    String   @unique @db.VarChar(50)
   mother String   @db.VarChar(100)
   birth  DateTime
   sus    String?  @unique @db.VarChar(30)
+}
+
+model PatientFlexpen {
+  id     String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name   String   @db.VarChar(50)
+  cpf    String   @unique @db.VarChar(50)
+  mother String   @db.VarChar(100)
+  birth  DateTime
+  sus    String?  @unique @db.VarChar(30)
+  term   String
 }
 
 model User {
