@@ -1,5 +1,5 @@
 "use client";
-import { useActionState, useContext, useRef, useState } from "react";
+import { useActionState, useContext, useEffect, useRef, useState } from "react";
 import { ModalContext } from "@/providers/modal";
 import { Input } from "../input";
 import { LuFileSearch2 } from "react-icons/lu";
@@ -13,6 +13,18 @@ export function ModalFlexpenResgister() {
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [state, formAction] = useActionState(createPatient, { error: {} });
+
+  useEffect(() => {
+    if (state.success) {
+      setFile(null);
+      setFileName("nenhum arquivo");
+      setPreview(null)
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  }, [state.success]);
 
   function handleHideModal() {
     hideModal();
@@ -112,6 +124,9 @@ export function ModalFlexpenResgister() {
               alt="Pré-visualização"
               className="w-40 rounded"
             />
+          )}
+          {state.errors?.file && (
+            <p className="text-red-500">{state.errors.file}</p>
           )}
         </div>
         {state.success && (

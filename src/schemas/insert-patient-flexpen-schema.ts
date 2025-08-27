@@ -9,14 +9,6 @@ export const InsertPatientFlexPenSchema = z.object({
   }),
   mother: z.string().min(3, "Nome da mãe deve ter pelo menos 3 caracteres"),
   sus: z.string().optional(),
-  file: z
-    .instanceof(File, { message: "Arquivo é obrigatório" })
-    .refine((file) => file.size > 0, { message: "Arquivo vazio" })
-    .refine((file) => file.size <= 2 * 1024 * 1024, { message: "Máx. 2MB" })
-    .refine(
-      (file) => ["image/jpeg", "image/jpg", "image/png"].includes(file.type),
-      { message: "Somente JPG ou PNG" }
-    ),
 });
 
 export type InsertPatientFlexPenData = z.infer<

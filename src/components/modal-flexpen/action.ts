@@ -13,7 +13,6 @@ type PatientFormState = {
     birth?: string[];
     mother?: string[];
     sus?: string[];
-    file?: string[];
   };
 
   success?: boolean;
@@ -30,12 +29,10 @@ export async function createPatient(
       mother: formData.get("mother"),
       birth: formData.get("birth"),
       sus: formData.get("sus"),
-      file: formData.get("file"),
     };
 
     const parsed = InsertPatientFlexPenSchema.safeParse(rawData);
 
-    console.log(parsed);
     if (!parsed.success) {
       //criar os logs
       return { error: parsed.error.flatten().fieldErrors };
@@ -44,17 +41,25 @@ export async function createPatient(
     let savedFilePath: string | null = null;
 
     if (!file) {
-      return { error: { file: ["Deve-se importar o termo"] } };
+      return { errors: { file: ["O termo é obrigatório"] } };
+    }
+
+    // valida manualmente
+    if (!["image/jpeg", "image/jpg", "image/png"].includes(file.type)) {
+      return { errors: { file: ["Somente JPG ou PNG"] } };
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      return { errors: { file: ["Máx. 2MB"] } };
     }
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-
     const uploadDir = path.join(process.cwd(), "public", "uploads");
     const filePath = path.join(uploadDir, file.name);
-
-    await writeFile(filePath, buffer);
-
+    console.log("passei")
+    const result = await writeFile(filePath, buffer);
+    console.log(result)
     savedFilePath = `/uploads/${file.name}`;
 
     const { name, cpf, mother, birth, sus } = parsed.data;

@@ -26,7 +26,6 @@ export async function createPatient(
       mother: formData.get("mother"),
       birth: formData.get("birth"),
       sus: formData.get("sus"),
-      file: formData.get("file"),
     };
 
     const parsed = InsertPatientFlexPenSchema.safeParse(rawData);
